@@ -13,6 +13,9 @@ http://slicknav.com/
 Username : nelson
 password : 1 -->
 
+<!-- User:brooke@gingercreative.com.au
+Pass:Bj2siV6tWR67 -->
+
 
 <!-- Hamburger Menu -->
 https://jonsuh.com/hamburgers/
@@ -247,31 +250,25 @@ Redux::setSection( $opt_name, array(
 ?>
 <!-- LightSlider With Content Inside -->
  <section id="front-page-slider">
-  <?php if (isset($redux_data['fx-slider-opt']) && !empty($redux_data['fx-slider-opt'])) { ?>
   <ul id="slides" class="lightSlider">
-    <?php foreach ($redux_data['fx-slider-opt'] as $fx_slider): ?>
-      <?php $redux_img = $fx_slider['image']; ?> 
-      <li>
-
-      <div class="container">
-      <div class="row">
-          <div class="col-md-12">
-          <div class="content-wrap text-center">
-                <h1 class="banner-title">Great Expertise based on Experience</h1>
-                <p class="banner-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. </p>
-                <a href="#"><button class="banner-btn">Join Our Team</button></a>
+    <?php if (isset($redux_data['fx-slider-opt']) && !empty($redux_data['fx-slider-opt'])) { ?>
+      <?php foreach ($redux_data['fx-slider-opt'] as $fx_slider): ?>
+      <?php $img = $fx_slider['image']; ?>
+        <li class="text-center">
+          <div class="content-wrap">
+            <div class="row">
+              <p class="slide-title">GARDEN CARE is our true passion!</p>
+              <p class="slide-desc">SO WHENEVER YOU JUST FEEL YOU NEED A PROFESSIONAL HELPING HAND AT YOUR GARDEN, CALL US UP!</p>
+              <a href="#" class="float-center"><button>Find Out More</button></a>
+            </div>
           </div>
-        </div>
-      </div>
-      </div>
-      <img src="<?php echo $redux_img;?>" title="<?php echo $title_txt; ?>" alt="<?php echo $alt_text; ?>" />
-    </li>
-    <?php endforeach ?>
+          
+          <img src="<?php echo $img; ?>" />
+        </li>
+      <?php endforeach; ?>
     <?php } ?>
-    </ul>
+  </ul>
+  
 </section>
 
 
@@ -643,3 +640,79 @@ function jobs_populating_my_posts_columns( $column_name, $post_id ) {
          break;
    }
 } ?>
+
+
+
+<!-- Sticky Quick Enquiry -->
+<span class="sticky-button-position show-for-large ">
+    <span data-remodal-target="remodal-enquiry" class="button">Quick Enquiry</span>
+  </span>
+
+<style>
+  .sticky-button-position {
+    -moz-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    position: fixed;
+    right: -4%;
+    top: 35%;
+    z-index: 100;
+
+    .button {
+        font-size: 1.2rem;
+        margin: 0 0 0rem;
+
+        /*Include These if not using foundation.min.css*/
+        display: inline-block;
+        vertical-align: middle;
+        padding: .85em 1em;
+        -webkit-appearance: none;
+        border: 1px solid transparent;
+        border-radius: 3px;
+        transition: background-color .25s ease-out,color .25s ease-out;
+        line-height: 1;
+        text-align: center;
+        cursor: pointer;
+        background-color: #2ba6cb;
+        color: #fefefe;
+    }
+}
+</style>
+
+
+<!-- Add Preview Image Before Upload -->
+
+<input id="file_upload" name="image" type="file">
+<img id="image" width="150" />
+
+<script> 
+$('#file_upload').change(function () {
+    var reader = new FileReader();
+        reader.onload = function (e) {
+            // get loaded data and render thumbnail.
+            $('#image').attr('src', e.target.result);
+        };
+        // read the image file as a data URL.
+        reader.readAsDataURL(this.files[0]);
+    });
+</script>
+
+
+<!-- Wait for Div To Load and Run Next Function Inside -->
+<script>
+  function waitForElement(elementPath, callBack){
+    window.setTimeout(function(){
+      if($(elementPath).length){
+        callBack(elementPath, $(elementPath));
+      }else{
+        waitForElement(elementPath, callBack);
+      }
+    },500)
+  }
+
+  waitForElement("#myDiv",function(){
+    console.log("done");
+  });
+</script>
