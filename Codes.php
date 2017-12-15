@@ -13,7 +13,10 @@ http://slicknav.com/
 Username : nelson
 password : 1 -->
 
-<!-- User:brooke@gingercreative.com.au
+
+<!-- 
+WPMU DEV
+User:brooke@gingercreative.com.au
 Pass:Bj2siV6tWR67 -->
 
 
@@ -716,3 +719,46 @@ $('#file_upload').change(function () {
     console.log("done");
   });
 </script>
+
+<!-- Use HTML inside Shortcode -->
+<?php 
+function ourteam_shortcode() {
+   ob_start(); ?>
+   <div id="ourteam">
+      <div class="row">
+         <h2 class="large-12 columns text-center">
+            <?php echo output_cmb('team-heading'); ?>
+         </h2>
+
+         <?php $staffs = output_cmb('team_group');
+               foreach ( (array) $staffs as $key => $staff ) { 
+                  $photo = $staff['team-image'];
+                  $name = $staff['team-name'];
+                  $position = $staff['team-position'];
+                  $bio = $staff['team-bio']; ?>
+
+            <div class="large-4 columns">
+               <div class="grey-wrap">
+               <div class="row">
+                  <div class="large-12 columns text-center">
+                     <div class="team-img">
+                        <img src="<?php echo $photo; ?>" alt="<?php echo get_image_alt_by_src($photo); ?>" title="<?php echo get_image_title_by_id($photo); ?>">
+                     </div>
+                     <span class="team-name"><?php echo $name;?></span>
+                     <span class="team-position"><?php echo $position;?></span>
+                  </div>
+                  <div class="large-12 columns">
+                     <div class="team-bio">
+                        <?php echo wpautop($bio);?>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            </div>
+         <?php } ?>
+      </div>
+   </div>
+   <?php return ob_get_clean();
+}
+add_shortcode( 'our_team', 'ourteam_shortcode' );
+ ?>
