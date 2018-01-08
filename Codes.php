@@ -762,3 +762,24 @@ function ourteam_shortcode() {
 }
 add_shortcode( 'our_team', 'ourteam_shortcode' );
  ?>
+
+<!-- Search String using array values -->
+<?php
+/* strpos that takes an array of values to match against a string
+ * note the stupid argument order (to match strpos)
+ */
+function strpos_arr($haystack, $needle) {
+    if(!is_array($needle)) $needle = array($needle);
+    foreach($needle as $what) {
+        if(($pos = strpos($haystack, $what))!==false) return $pos;
+    }
+    return false;
+}
+
+$needle = array('something','nothing');
+$haystack = "This is something";
+echo strpos_arr($haystack, $needle); // Will echo True
+
+$haystack = "This isn't anything";
+echo strpos_arr($haystack, $needle); // Will echo False 
+?>
