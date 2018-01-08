@@ -768,6 +768,24 @@ add_shortcode( 'our_team', 'ourteam_shortcode' );
 /* strpos that takes an array of values to match against a string
  * note the stupid argument order (to match strpos)
  */
+
+//Update: Improved code with stop when the first of the needles is found:
+function strposa($haystack, $needle, $offset=0) {
+    if(!is_array($needle)) $needle = array($needle);
+    foreach($needle as $query) {
+        if(strpos($haystack, $query, $offset) !== false) return true; // stop on first true result
+    }
+    return false;
+}
+$string = 'Whis string contains word "cheese" and "tea".';
+$array  = array('burger', 'melon', 'cheese', 'milk');
+var_dump(strposa($string, $array)); // will return true, since "cheese" has been found
+
+
+
+
+// Another Example:
+
 function strpos_arr($haystack, $needle) {
     if(!is_array($needle)) $needle = array($needle);
     foreach($needle as $what) {
