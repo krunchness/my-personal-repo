@@ -801,3 +801,80 @@ echo strpos_arr($haystack, $needle); // Will echo True
 $haystack = "This isn't anything";
 echo strpos_arr($haystack, $needle); // Will echo False 
 ?>
+
+
+
+
+<!-- Simple Accordion -->
+
+<script>
+  $('.toggle').click(function(e) {
+      e.preventDefault();
+    
+      var $this = $(this);
+    
+      if ($this.next().hasClass('show')) {
+          $this.next().removeClass('show');
+          $this.next().slideUp(350);
+      } else {
+          $this.parent().parent().find('li .inner').removeClass('show');
+          $this.parent().parent().find('li .inner').slideUp(350);
+          $this.next().toggleClass('show');
+          $this.next().slideToggle(350);
+      }
+  });
+</script>
+
+<style>
+  ul {
+    list-style: none;
+    padding: 0;
+    width: 80%;
+    .inner {
+        padding-left: 1em;
+        overflow: hidden;
+        display: none;
+      
+        &.show {
+          /*display: block;*/
+        }
+    }
+  
+    li {
+        margin: .5em 0;
+      
+        a.toggle {
+            width: 100%;
+            display: block;
+            background: rgba(161, 155, 155, 0.8);
+            color: #fefefe;
+            padding: .75em;
+            border-radius: 0.15em;
+            transition: background .3s ease;
+          
+            &:hover {
+                background: rgba(0, 0, 0, 0.9);
+            }
+        }
+    }
+}
+</style>
+
+<!-- HTML Code of Simple Accordion -->
+<ul class="accordion">
+  <li>
+      <a class="toggle" href="javascript:void(0);">{{ selected.brandType.name }} Account</a>
+      <ul class="inner fxuser_container">
+      </ul>
+  </li>
+<li>
+      <a class="toggle" href="javascript:void(0);">Required Plugins</a>  
+      <ul class="inner plugins_container">
+      </ul>
+ </li>
+ <li>
+      <a class="toggle" href="javascript:void(0);">Deactivated Plugins</a>  
+      <ul class="inner deactivated_plugins">
+      </ul>
+ </li>
+</ul> 
