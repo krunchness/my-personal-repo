@@ -878,3 +878,188 @@ echo strpos_arr($haystack, $needle); // Will echo False
       </ul>
  </li>
 </ul> 
+
+
+<!-- Search for string inside a variable -->
+<?php 
+strpos($fx_user[0]->user_login, $brand_user['abbreviation'].'-webmaster' ) !== false
+ ?>
+
+ <!-- Load More on Button Click -->
+ <script>
+
+  $(".events-list li, .location-list li").slice(0, 3).show();
+  $(".location-list li").slice(0, 3).show();
+  $(".view-more-btn").on('click', function (e) {
+    e.preventDefault();
+    $(".events-list li:hidden").slice(0, 3).slideDown();
+    $(".location-list li:hidden").slice(0, 3).slideDown();
+    if ($(".events-list li:hidden, .location-list li:hidden").length == 0) {
+      $(".view-more-btn").fadeOut('slow');
+    }
+  });
+ </script>
+
+  <?php $args = array(
+    'post_type' => 'events',
+    'posts_per_page' => -1,
+    'orderby' => 'date',
+    'order' => 'DESC',
+
+  ); 
+
+  $query_events = new WP_Query( $args ); ?>
+  <div class="large-6 columns">
+    <div class="events-container">
+      <h2>Events</h2>
+    </div>
+    <div class="events-list-container">
+      <ul class="events-list">
+        <?php //for ($i=1; $i <= 3 ; $i++) {  ?>
+          <!-- <li class="events-list-item">test</li> -->
+        <?php if ($query_events->have_posts()): ?>
+          <?php $event_count = 0; ?>
+          <?php while ($query_events->have_posts()): $query_events->the_post(); ?>
+            <?php $thumbnail = get_the_post_thumbnail_url(); ?>
+            <?php $img = ($thumbnail != false ? get_the_post_thumbnail_url() : $fx_data['gallery_thumbnail']['url']); ?>
+            <?php $event_count++; 
+
+            $date = get_post_meta( get_the_ID(), 'cmb_events_date', true );?>
+            <li class="events-list-item event-<?php echo $event_count; ?>">
+
+              <?php 
+
+              $title = get_post_meta( get_the_ID(), 'cmb_location_title', true );
+
+               ?>
+
+              <div class="row">
+                <div class="large-12 columns">
+                  <div class="event-content">
+                    <h2><?php the_title(); ?></h2>
+                    <p class="event-date">Date: <?php echo $date; ?></p>
+                    <p class="event-desc">Location: <?php echo $title; ?> </p>
+                  </div>
+                  <?php $temp_loc = '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6872904.100801892!2d145.55863879391765!3d-32.741574961659644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b0dcb74f75e4b0d%3A0x1780af1122c49f2d!2sNew+South+Wales%2C+Australia!5e0!3m2!1sen!2sph!4v1515554370463" width="450" height="130" frameborder="0" style="border:0" allowfullscreen></iframe>';
+
+                  $location = get_post_meta( get_the_ID(), 'cmb_event_location', true );
+
+                  $location = ($location != ''? $location : $temp_loc);
+                  ?>
+
+                  <div class="map-container hide-desktop">
+                    <?php echo $location; ?>
+                  </div>
+                </div>
+              </div>
+            </li>
+          <?php endwhile; ?>
+          <?php wp_reset_query(); ?>
+        <?php endif; ?>
+      </ul>
+    </div>
+  </div>
+
+  <div class="large-6 columns mobile-hidden">
+    <div class="locations-container">
+      <h2>Locations</h2>
+    </div>
+
+     <div class="location-list-container">
+      <ul class="location-list"> 
+        <?php if ($query_events->have_posts()): ?>
+          <?php $class_count = 0; ?>
+          <?php while ($query_events->have_posts()): $query_events->the_post(); ?>
+            <?php $class_count++; ?>
+            <li class="location-list-item location-<?php echo $class_count; ?>">
+
+            <?php $temp_loc = '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6872904.100801892!2d145.55863879391765!3d-32.741574961659644!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b0dcb74f75e4b0d%3A0x1780af1122c49f2d!2sNew+South+Wales%2C+Australia!5e0!3m2!1sen!2sph!4v1515554370463" width="450" height="130" frameborder="0" style="border:0" allowfullscreen></iframe>';
+
+            $location = get_post_meta( get_the_ID(), 'cmb_event_location', true );
+
+            $location = ($location != ''? $location : $temp_loc);
+            ?>
+              <div class="map-container">
+                <?php echo $location; ?>
+              </div>
+            </li> 
+          <?php endwhile; ?>
+          <?php wp_reset_query(); ?>
+        <?php endif; ?>
+        
+      
+       </ul>
+    </div>
+  </div>
+
+
+  <a href="#" title="View more Events" alt="View more Events" class="view-link">
+     <button class="view-more-btn">View More Events</button>
+  </a>
+  
+
+
+
+<!-- Allow SVG Format in wordpress -->
+<?php 
+
+function cc_mime_types($mimes) {
+  $mimes['svg'] = 'image/svg+xml';
+  return $mimes;
+}
+add_filter('upload_mimes', 'cc_mime_types');
+
+ ?>
+
+
+
+<!-- Add Toolbar at the top of header -->
+
+<!-- Add this Inside of Header -->
+<div class="toolbar mobile-only">
+  <div class="row">
+    <div class="toolbar-content">
+      <div class="small-12 columns">
+        <div class="call-enquiry">
+          <span class="enquiry-assistance">FOR ASSISTANCE/ENQUIRY</span>
+          <a href="tel:0297572666">
+            <span class="enquiry-callnum">CALL 02 9757 2666</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="small-12 columns">
+      <div class="toolbar-toggle-wrap">
+        <span class="toggle-arrow">
+          <i class="fa fa-chevron-down" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CSS -->
+<style>
+  .toolbar {
+    text-align: center;
+    padding-top: 5px;
+}
+
+.toolbar-content {
+    display: none;
+}
+
+.toolbar-toggle-wrap {
+    font-size: 20px;
+    color: #fff;
+}
+</style>
+
+<!-- Script -->
+<script>
+  //toggle-top
+  $( ".toggle-arrow" ).click(function() {
+    $( ".toolbar-content" ).toggleClass( "toggle-top" ).slideToggle("500, linear");
+    
+  });
+</script>

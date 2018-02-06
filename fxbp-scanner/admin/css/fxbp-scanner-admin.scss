@@ -1,0 +1,205 @@
+.left-section {
+    float: left;
+    width: 50%;
+
+    .container {
+        margin-top: 30px;
+    }
+
+    .test-icon {
+        vertical-align: middle;
+        display: inline-block;
+        width: 30px;
+        margin-right: 15px;
+    }
+
+    .test-title {
+        vertical-align: middle;
+        display: inline-block;
+    }
+}
+
+.right-section {
+    float: left;
+    width: 50%;
+
+    .container {
+        margin-top: 30px;
+    }
+
+    .test-icon {
+        vertical-align: middle;
+        display: inline-block;
+        width: 23px;
+        margin-right: 10px;
+    }
+
+    .test-title {
+        vertical-align: middle;
+        display: inline-block;
+    }
+}
+
+.loading-icon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 35em;
+    margin: auto;
+}
+
+.button-container {
+    clear: both;
+}
+
+[v-cloak] {
+    display: none;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Pacifico|Open+Sans:300,400,600");
+
+.fxbp-wrap {
+    * {
+        box-sizing: border-box;
+        font-family: 'Open Sans',sans-serif;
+        font-weight: 300;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    p {
+        font-size: 1.1em;
+        margin: 1em 0;
+    }
+
+    .description {
+        margin: 1em auto 2.25em;
+    }
+
+    h1 {
+        font-family: 'Pacifico', cursive;
+        font-weight: 400;
+        font-size: 2.5em;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        width: 100%;
+
+        .inner {
+            padding-left: 1em;
+            overflow: hidden;
+            display: none;
+            padding-right: 1em;
+            &.show {
+                height: 450px;
+                overflow: auto;
+                width: 100%;
+            }
+        }
+
+        li {
+            margin: .5em 0;
+
+            &.disabled {
+                cursor: not-allowed;
+
+                a {
+                    pointer-events: none;
+                }
+            }
+
+            a.toggle {
+                width: 100%;
+                display: block;
+                background: #127dac;
+                color: #fff;
+                padding: .75em;
+                border-radius: 0.15em;
+                transition: background .3s ease;
+                font-weight: 800;
+
+                &:hover {
+                    background: #f89b1c;
+                }
+            }
+        }
+    }
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    margin-left: 15px;
+
+    img {
+        width: 25px;
+    }
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: -35px;
+    left: -45px;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.table-title {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-title td, .table-title th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.table-title tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table-title tr td:nth-of-type(1) {
+    text-align: center;
+}
+
+.table-title tr:hover {
+    background-color: #ddd;
+}
+
+.table-title th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+}
+
+.table-wrapper {
+    margin-bottom: 35px;
+}
+
+.error-msg {
+    color: red;
+    font-size: 20px !important;
+    font-weight: 600;
+}
