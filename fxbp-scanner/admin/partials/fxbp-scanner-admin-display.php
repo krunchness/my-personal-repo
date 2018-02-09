@@ -57,6 +57,8 @@
         <div class="results-container" v-cloak v-else>
             <img src="<?php echo plugins_url().'/fxbp-scanner/public/images/spin.gif' ?>" class="loading-icon">
             <button v-on:click="scanIsClicked = false" style="display: block;">Rescan</button>
+
+                <selected-options v-bind:server='selected.serverType' v-bind:brand='selected.brandType.name' v-bind:website='selected.websiteType'> </selected-options>
                 <ul class="accordion">
                     <li>
                         <a class="toggle" href="javascript:void(0);">{{ selected.brandType.name }} Account</a>

@@ -101,6 +101,7 @@ function Run_Test(){
   }
   
   waitForElement(".settings_page_fxbp-scanner #wpbody-content",function(){
+
 	var vm = new Vue({
   		el: '.wrap',
 		data: {
@@ -180,6 +181,22 @@ function Run_Test(){
 			}
 		}
   	});
+
+  	Vue.component('selected-options', {
+  		props: ['server', 'website', 'brand'],
+
+  		template: '\
+  			<span class="selected-options">Server: {{ toUpperfirst(server) }}\
+  			| Website: {{ toUpperfirst(website) }} | \
+  			Brand: {{ toUpperfirst(brand) }}</span>',
+
+  		methods: {
+  			toUpperfirst: function(string){
+  				return string.charAt(0).toUpperCase() + string.slice(1);
+  			}
+  		},
+
+	})
 
   	
 

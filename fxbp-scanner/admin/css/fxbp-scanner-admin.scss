@@ -95,6 +95,7 @@
             overflow: hidden;
             display: none;
             padding-right: 1em;
+
             &.show {
                 height: 450px;
                 overflow: auto;
@@ -201,5 +202,20 @@
 .error-msg {
     color: red;
     font-size: 20px !important;
+    font-weight: 600;
+}
+
+.green-msg {
+    color: #3cbc73;
+    font-size: 20px !important;
+    font-weight: 600;
+}
+
+.selected-options {
+    font-size: 20px;
+    padding: 25px;
+    display: block;
+    text-align: center;
+    color: #127dac;
     font-weight: 600;
 }

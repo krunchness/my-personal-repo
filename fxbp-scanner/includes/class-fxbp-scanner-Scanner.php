@@ -264,7 +264,7 @@ class Scanner
 					<?php if ($plugins_count == 0): ?>
 						<tr>
 						    <td colspan="5">
-						    	<p class="error-msg">No Unused Plugins</p>
+						    	<p class="green-msg">No Unused Plugins</p>
 						    </td>
 					    </tr>		
 					<?php endif ?>		
@@ -280,7 +280,7 @@ class Scanner
 		ob_start();?>
 
 		<div class="table-wrapper">
-			<h2><?php echo strtoupper($brand_user['abbreviation']); ?> Webmaster Account</h2>
+			<h2>Wordpress Files</h2>
 			<table class="table-title">
 				<tr>
 				    <th>Status</th>
@@ -312,22 +312,20 @@ class Scanner
 					<?php endif; ?>
 				</tr>
 				
-				<!-- Issue: cant find the file -->
 				<tr>
-					<?php if (file_exists(get_template_directory_uri().'/images/favicon.ico') || file_exists(get_template_directory_uri().'/favicon.ico') || file_exists(get_template_directory_uri().'/favicon.png') || file_exists(get_template_directory_uri().'/images/favicon.png')): ?>
+					<?php if (file_exists(get_stylesheet_directory().'/images/favicon.ico') || file_exists(get_stylesheet_directory().'/favicon.ico') || file_exists(get_stylesheet_directory().'/favicon.png') || file_exists(get_stylesheet_directory().'/images/favicon.png')): ?>
 						<td><img src="<?php echo  plugins_url().'/fxbp-scanner/public/images/check.png' ?>" class="test-icon"></td>
 						<td>Favicon.ico</td> 
 						<td>File Exist</td>
 					<?php else: ?>
 						<td><img src="<?php echo plugins_url().'/fxbp-scanner/public/images/x.png' ?>" class="test-icon"></td>
 						<td>Favicon.ico</td>
-						<td>No Existing File</td>
+						<td>No Existing Favicon</td>
 					<?php endif; ?>
 				</tr>
-
-				<!-- Issue: cant find the file -->
+				
 				<tr>
-					<?php if (file_exists(get_template_directory_uri().'/screenshot.png')): ?>
+					<?php if (file_exists(get_stylesheet_directory().'/screenshot.png')): ?>
 						<td><img src="<?php echo  plugins_url().'/fxbp-scanner/public/images/check.png' ?>" class="test-icon"></td>
 						<td>Screenshot.png</td> 
 						<td>File Exist</td>
@@ -395,8 +393,10 @@ class Scanner
 		global $wpdb;
 		$marketing_user = $brand_user['abbreviation'].'-marketer';
 		$marketer = get_users( array( 'search' => '*'.$marketing_user.'*' ) );
+		$marketer_meta = get_user_meta( $marketer[0]->id );
+		$marketer_data = get_userdata( $marketer[0]->id );
 
-		$fx_user = get_users(['search' => $brand_user['name']]);
+		$fx_user = get_users(['search' => '*'.$brand_user['abbreviation'].'-webmaster*']);
 		$fx_user_data = get_userdata( $fx_user[0]->id );
 		$fx_user_meta = get_user_meta($fx_user[0]->id);
 		$check_icon = plugins_url().'/fxbp-scanner/public/images/check.png';
@@ -459,16 +459,19 @@ class Scanner
 						<?php endif; ?>
 				    		<td><?php echo strtoupper($brand_user['abbreviation']); ?> First Name</td>
 				    		<td><?php echo $fx_user_meta['first_name'][0]; ?></td>
+				    		<td>Solution</td>
 					  </tr>
 
 					  <tr>
-					  	<?php if ($fx_user[0]->user_url == $brand_user['urlLink']): ?>
-								<td><img src="<?php echo $check_icon; ?>" class="test-icon wp-prefix"></td>
+					  	
+					  	<?php if (!empty($fx_user[0]->user_url) && $fx_user[0]->user_url == $brand_user['urlLink']): ?>
+							<td><img src="<?php echo $check_icon; ?>" class="test-icon wp-prefix"></td>
 							<?php else: ?>
-								<img src="<?php echo $x_cross; ?>" class="test-icon wp-prefix">
+							<td><img src="<?php echo $x_cross; ?>" class="test-icon wp-prefix"></td>
 							<?php endif; ?>
 							<td><?php echo strtoupper($brand_user['abbreviation']); ?> Website URL</td>
 							<td><?php echo $fx_user[0]->user_url; ?></td>
+							<td>Solution</td>
 					  </tr>
 
 					  <tr>
@@ -479,6 +482,7 @@ class Scanner
 						<?php endif; ?>
 						<td><?php echo strtoupper($brand_user['abbreviation']); ?> Account Role</td>
 						<td><?php echo $fx_user_data->roles[0]; ?></td>
+						<td>Solution</td>
 
 					  </tr>
 				<?php else: ?>
@@ -502,7 +506,7 @@ class Scanner
 				    <th>Solution</th>
 				  </tr>
 
-			<?php if (!empty($marketer)): ?>
+			<?php //if (!empty($marketer)): ?>
 
 				  	<?php if(strpos($marketer[0]->data->user_login, $brand_user['abbreviation'].'-marketer' ) !== false): ?>
 						<td><img src="<?php echo $check_icon; ?>"></td>
@@ -516,64 +520,64 @@ class Scanner
 
 
 					  <tr>
-					  	<?php if ($fx_user[0]->user_email == $brand_user['email']): ?>
+					  	<?php if ($marketer[0]->data->user_email == $brand_user['marketingEmail']): ?>
 							<td><img src="<?php echo $check_icon; ?>" class="test-icon wp-prefix"></td>
 						<?php else: ?>
 							<td><img src="<?php echo $x_cross; ?>" class="test-icon wp-prefix"></td>
 						<?php endif; ?>
 				    		<td><?php echo strtoupper($brand_user['abbreviation']); ?> Email</td>
-				    		<td><?php echo $fx_user[0]->user_email; ?></td>
+				    		<td><?php echo $marketer[0]->data->user_email; ?></td>
 				    		<td>Solution</td>
 					  </tr>
 
 					  <tr>
-						<?php if ($fx_user[0]->display_name == $brand_user['name']): ?>
+						<?php if ($marketer[0]->data->display_name == $brand_user['name']): ?>
 							<td><img src="<?php echo $check_icon; ?>" class="test-icon wp-prefix"></td>
 						<?php else: ?>
 							<td><img src="<?php echo $x_cross; ?>" class="test-icon wp-prefix"></td>
 						<?php endif; ?>
 				    		<td><?php echo strtoupper($brand_user['abbreviation']); ?> Display Name</td>
-				    		<td><?php echo $fx_user[0]->display_name; ?></td>
+				    		<td><?php echo $marketer[0]->data->display_name; ?></td>
 				    		<td>Solution</td>
 					  </tr>
 
 					  <tr>
-					  	<?php if ($fx_user_meta['first_name'][0] == $brand_user['name']): ?>
+					  	<?php if ($marketer_meta['first_name'][0] == $brand_user['name']): ?>
 							<td><img src="<?php echo $check_icon; ?>" class="test-icon wp-prefix"></td>
 						<?php else: ?>
 							<td><img src="<?php echo $x_cross; ?>" class="test-icon wp-prefix"></td>
 						<?php endif; ?>
 				    		<td><?php echo strtoupper($brand_user['abbreviation']); ?> First Name</td>
-				    		<td><?php echo $fx_user_meta['first_name'][0]; ?></td>
+				    		<td><?php echo $marketer_meta['first_name'][0]; ?></td>
 					  </tr>
 
 					  <tr>
-					  	<?php if ($fx_user[0]->user_url == $brand_user['urlLink']): ?>
+					  	<?php if ($marketer[0]->data->user_url == $brand_user['urlLink']): ?>
 								<td><img src="<?php echo $check_icon; ?>" class="test-icon wp-prefix"></td>
 							<?php else: ?>
-								<img src="<?php echo $x_cross; ?>" class="test-icon wp-prefix">
+								<td><img src="<?php echo $x_cross; ?>" class="test-icon wp-prefix"></td>
 							<?php endif; ?>
 							<td><?php echo strtoupper($brand_user['abbreviation']); ?> Website URL</td>
-							<td><?php echo $fx_user[0]->user_url; ?></td>
+							<td><?php echo $marketer[0]->data->user_url; ?></td>
 					  </tr>
 
 					  <tr>
-					  	<?php if ($fx_user_data->roles[0] == 'administrator'): ?>
+					  	<?php if ($marketer[0]->roles[0] == 'editor'): ?>
 							<td><img src="<?php echo $check_icon; ?>" class="test-icon wp-prefix"></td>
 						<?php else: ?>
 							<td><img src="<?php echo $x_cross; ?>" class="test-icon wp-prefix"></td>
 						<?php endif; ?>
 						<td><?php echo strtoupper($brand_user['abbreviation']); ?> Account Role</td>
-						<td><?php echo $fx_user_data->roles[0]; ?></td>
+						<td><?php echo $marketer[0]->roles[0]; ?></td>
 
 					  </tr>
-			<?php else: ?>
-				 	<tr>
+			<?php// else: ?>
+				 	<!-- <tr>
 					    <td colspan="6">
-					    	<p class="error-msg"><?php echo strtoupper($brand_user['abbreviation']); ?> Editor Account Doesn't Exist</p>
+					    	<p class="error-msg"><?php //echo strtoupper($brand_user['abbreviation']); ?> Marketer Account Doesn't Exist</p>
 					    </td>
-				    </tr>
-			 <?php endif ?>
+				    </tr> -->
+			 <?php// endif ?>
 				</table>
 			</div>
 			
@@ -582,7 +586,7 @@ class Scanner
 				<?php 
 					$fx_editor = get_users( array( 'search' => '*fx-editor2154*' ) );
 					// echo '<pre>';
-					// print_r($fx_editor[0]->data);
+					// print_r($fx_editor[0]->roles[0]);
 					// echo '</pre>';
 					$fx_editor_meta = get_userdata($fx_editor[0]->data->ID);
 				 ?>
@@ -597,7 +601,7 @@ class Scanner
 						    <th>Value</th>
 						    <th>Solution</th>
 						  </tr>
-					<?php if (!empty($fx_editor)): ?>
+					<?php //if (!empty($fx_editor)): ?>
 					  	<?php if($fx_editor[0]->data->user_login == 'fx-editor2154'): ?>
 							<td><img src="<?php echo $check_icon; ?>"></td>
 						<?php else: ?>
@@ -632,23 +636,23 @@ class Scanner
 						  </tr>
 
 						  <tr>
-						  	<?php if ($fx_editor_meta->roles[0] == 'editor'): ?>
+						  	<?php if ($fx_editor[0]->roles[0] == 'editor'): ?>
 								<td><img src="<?php echo $check_icon; ?>" class="test-icon wp-prefix"></td>
 							<?php else: ?>
 								<td><img src="<?php echo $x_cross; ?>" class="test-icon wp-prefix"></td>
 							<?php endif; ?>
 							<td><?php echo strtoupper($brand_user['abbreviation']); ?> Account Role</td>
-							<td><?php echo $fx_user_data->roles[0]; ?></td>
+							<td><?php echo $fx_editor[0]->roles[0]; ?></td>
 
 						  </tr>
 						
-				 <?php else: ?>
-				 	<tr>
+				 <?php// else: ?>
+				 <!-- 	<tr>
 					    <td colspan="6">
-					    	<?php echo strtoupper($brand_user['abbreviation']); ?> Editor Account Doesn't Exist
+					    	<p class="error-msg"><?php //echo strtoupper($brand_user['abbreviation']); ?> Editor Account Doesn't Exist</p>
 					    </td>
-				    </tr>
-				 <?php endif ?>
+				    </tr> -->
+				 <?php //endif ?>
 						</table>
 					</div>
 			<?php endif ?>
@@ -713,40 +717,77 @@ class Scanner
 	public function user_capabilities(){
 
 		ob_start(); ?>
-			<div class="container">
+
+			<?php 
+				global $wp_roles;
+
+			    if ( !isset( $wp_roles ) ) $wp_roles = new WP_Roles();
+
+			    $available_roles_names = $wp_roles->get_names();//we get all roles names
+			 ?>
+
+		 	<div class="table-wrapper">
+				<h2>Editors Capabilities</h2>
+				<table class="table-title">
+					<tr>
+					    <th>Status</th>
+					    <th>Label</th>
+					    <th>Value</th>
+					    <th>Solution</th>
+					</tr>
+			
 				<?php $editor_cap = get_role( 'editor' )->capabilities; ?>
 				<?php $options = ['manage_options', 'edit_theme_options']; ?>
-				<p>Editors Capabilities:</p>
 				<?php foreach ($options as $option): ?>
-					<?php if (array_key_exists($option, $editor_cap)): ?>
-						<img src="<?php echo plugins_url().'/fxbp-scanner/public/images/check.png' ?>" class="test-icon">
-						<p class="test-title">Ticked <?php echo $option; ?></p></br>					
-					<?php else: ?>
-						<img src="<?php echo plugins_url().'/fxbp-scanner/public/images/x.png' ?>" class="test-icon">
-						<p class="test-title"><?php echo $option; ?> needs to be checked</p></br>
-					<?php endif; ?>
+					<tr>
+						<?php if (array_key_exists($option, $editor_cap)): ?>
+							<td><img src="<?php echo plugins_url().'/fxbp-scanner/public/images/check.png' ?>" class="test-icon"></td>
+							<td><?php echo $option ?></td>
+							<td>Checked</td>					
+						<?php else: ?>
+							<td><img src="<?php echo plugins_url().'/fxbp-scanner/public/images/x.png' ?>" class="test-icon"></td>
+							<td><?php echo $option; ?></td>
+							<td>Not Checked</td>
+						<?php endif; ?>
+					</tr>
 				<?php endforeach; ?>
-				</br>
+
 				<?php $arr_roles = ['contributor', 'subscriber', 'author'] ?>
+				</table>
+			</div>
+
+			<div class="table-wrapper">
+				<h2>Other Role Capabilities</h2>
+				<table class="table-title">
+					<tr>
+					    <th>Status</th>
+					    <th>Label</th>
+					    <th>Value</th>
+					    <th>Solution</th>
+					</tr>
 
 				<?php foreach ($arr_roles as $role): ?>
 					<?php $capabilities = get_role( $role )->capabilities; ?>
-
+					<tr>
 					<?php if ($role == 'contributor' && count($capabilities) < 3): ?>
-						<img src="<?php echo plugins_url().'/fxbp-scanner/public/images/check.png' ?>" class="test-icon">
-						<p class="test-title">Contributor Capabilities : None</p></br>
+						<td><img src="<?php echo plugins_url().'/fxbp-scanner/public/images/check.png' ?>" class="test-icon"></td>
+						<td>Contributor Capabilities</td>
+						<td>None</td>
 
 					<?php elseif($role == 'subscriber' && count($capabilities) < 2): ?>
-						<img src="<?php echo plugins_url().'/fxbp-scanner/public/images/check.png' ?>" class="test-icon">
-						<p class="test-title">Subscriber Capabilities : None</p></br>
+						<td><img src="<?php echo plugins_url().'/fxbp-scanner/public/images/check.png' ?>" class="test-icon"></td>
+						<td>Subscriber Capabilities</td>
+						<td>None</td>
 
 					<?php elseif($role == 'author' && count($capabilities) < 4): ?>
-						<img src="<?php echo plugins_url().'/fxbp-scanner/public/images/check.png' ?>" class="test-icon">
-						<p class="test-title">Author Capabilities : None</p></br>
+						<td><img src="<?php echo plugins_url().'/fxbp-scanner/public/images/check.png' ?>" class="test-icon">
+						</td>
+						<td>Author Capabilities</td>
+						<td>None</td>
 
 					<?php else: ?>
-						<img src="<?php echo plugins_url().'/fxbp-scanner/public/images/x.png' ?>" class="test-icon">
-						<p class="test-title"><?php echo ucfirst($role); ?> Capabilities :</p>
+						<td><img src="<?php echo plugins_url().'/fxbp-scanner/public/images/x.png' ?>" class="test-icon"></td>
+						<td><?php echo ucfirst($role); ?> Capabilities</td>
 
 						<?php 
 						$index = 1;
@@ -761,14 +802,33 @@ class Scanner
 						}
 
 						foreach ($capabilities as $key => $capability): ?>
-						</br>
-							<img src="<?php echo plugins_url().'/fxbp-scanner/public/images/x.png' ?>" class="test-icon" style="width: 20px; margin-left: 30px;">
-							<p class="test-title"><?php echo $index.'. '.$key; ?></p>
+							<td><?php echo $index.'. '.$key; ?></td>
 							<?php $index++; ?>
 						<?php endforeach; ?>
 
 					<?php endif; ?>
+					</tr>	
 				<?php endforeach; ?>
+				</table>
+			</div>
+
+			<div class="table-wrapper">
+				<h2>All User Roles</h2>
+				<table class="table-title">
+					<tr>
+					    <th>ID</th>
+					    <th>Role</th>
+					</tr>
+
+					<?php $index = 0; ?>
+					<?php foreach ($available_roles_names as $key => $roles):?>
+						<tr>
+							<?php $index++; ?>
+							<td><?php echo $index; ?></td>
+							<td><?php echo ucfirst($key); ?></td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
 			</div>
 		<?php return ob_get_clean(); ?>
 	<?php }
@@ -868,42 +928,6 @@ class Scanner
 
 	public function check_plugin_versions(){
 
-
-		$plugin_name = array(
-			array(
-				"name" => 'Change Table Prefix',
-				'plugin_file' => 'change-table-prefix',
-				'folder_name' => 'change-table-prefix'
-			),array(
-				"name" => 'Woocommerce',
-				'plugin_file' => 'woocommerce',
-				'folder_name' => 'woocommerce'
-			),array(
-				"name" => 'All in One WP Security',
-				'plugin_file' => 'wp-security',
-				'folder_name' => 'all-in-one-wp-security-and-firewall'
-			),array(
-				"name" => 'Yoast SEO',
-				'plugin_file' => 'wp-seo',
-				'folder_name' => 'wordpress-seo'
-			),array(
-				"name" => 'User Role Editor',
-				'plugin_file' => 'user-role-editor',
-				'folder_name' => 'user-role-editor'
-			),array(
-				"name" => 'WP Smush',
-				'plugin_file' => 'wp-smush',
-				'folder_name' => 'wp-smushit'
-			),array(
-				"name" => 'Contact Form 7',
-				'plugin_file' => 'wp-contact-form-7',
-				'folder_name' => 'contact-form-7'
-			),array(
-				"name" => 'Akismet',
-				'plugin_file' => 'akismet',
-				'folder_name' => 'akismet'
-			),
-		);
 		ob_start(); ?>
 		<?php $plugin_Basename = get_plugins(); ?>
 
@@ -914,32 +938,51 @@ class Scanner
 			
 			}
 		 ?>
-		<div class="container">
-		<?php foreach ($plugin_Basename as $key => $value): ?>
-			<?php $folder_name = strstr($key, '/' , true);
-				$file_name =  substr($key, strrpos($key, '/') + 1);?>
+		<div class="table-wrapper">
+			<h2>Installed Plugin Versions</h2>
+			<table class="table-title">
+			  <tr>
+			    <th>Status</th>
+			    <th>Plugin Name</th>
+			    <th>Current Version</th>
+			    <th>Latest Version</th>
+			    <th>Solution</th>
+			  </tr>
+		
+				<?php foreach ($plugin_Basename as $key => $value): ?>
+					<?php $folder_name = strstr($key, '/' , true);
+						$file_name =  substr($key, strrpos($key, '/') + 1);?>
 
-				<?php  $args = array(
-				    'slug' => $folder_name,
-				    'fields' => array(
-				        'version' => true,
-				    )
-				);
-				$call_api = plugins_api( 'plugin_information', $args );
-				$version_latest = $call_api->version; ?>
+						<?php  $args = array(
+						    'slug' => $folder_name,
+						    'fields' => array(
+						        'version' => true,
+						    )
+						);
 
-		 		<?php if ($value['Version'] == $version_latest): ?>
-		 			<img src="<?php echo plugins_url().'/fxbp-scanner/public/images/check.png' ?>" class="test-icon">
-		 			<p class="test-title"><?php echo $value['Name']; ?> </br> Latest Version <?php echo $value['Version']; ?></p></br>
-		 		<?php else: ?>
-		 			<img src="<?php echo plugins_url().'/fxbp-scanner/public/images/x.png' ?>" class="test-icon">
-		 			<p class="test-title"><?php echo $value['Name']; ?> Needs to update. </p></br>
-		 			<p class="test-title">Current version: <?php echo $value['Version']; ?> | </p>
-		 			<p class="test-title">Latest version: <?php echo $version_latest; ?></p> </br>
-		 		<?php endif; ?>
-				</br>
-		<?php endforeach; ?>
-		</div>
+						$call_api = plugins_api( 'plugin_information', $args );
+						$version_latest = $call_api->version; ?>
+					<tr>
+				 		<?php if ($value['Version'] == $version_latest): ?>
+				 			<td><img src="<?php echo plugins_url().'/fxbp-scanner/public/images/check.png' ?>" class="test-icon"></td>
+				 			<td><?php echo $value['Name']; ?></td> 
+				 			<td><?php echo $value['Version']; ?></td>
+				 			<td><?php echo $value['Version']; ?></td>
+				 		<?php elseif(empty($version_latest) && $value['Version']): ?>
+				 			<td><img src="<?php echo plugins_url().'/fxbp-scanner/public/images/check.png' ?>" class="test-icon"></td>
+				 			<td><?php echo $value['Name']; ?></td> 
+				 			<td><?php echo $value['Version']; ?></td>
+				 			<td><?php echo $value['Version']; ?></td>
+				 		<?php else: ?>
+				 			<td><img src="<?php echo plugins_url().'/fxbp-scanner/public/images/x.png' ?>" class="test-icon"></td>
+				 			<td><?php echo $value['Name']; ?></td>
+				 			<td><?php echo $value['Version'];?></td>
+				 			<td><?php echo $version_latest; ?></td>
+				 		<?php endif; ?>
+					</tr>
+				<?php endforeach; ?>
+				</table>
+			</div>
 
 		<?php return ob_get_clean(); ?>
 
@@ -1037,7 +1080,7 @@ class Scanner
 
 					<tr>
 						<!-- Additional Headers Field -->
-						<?php if (strpos($contact_form_body['additional_headers'], 'Reply To:' ) !== false): ?>
+						<?php if (strpos($contact_form_body['additional_headers'], 'Reply-To:' ) !== false): ?>
 							<td><img src="<?php echo plugins_url().'/fxbp-scanner/public/images/check.png' ?>" class="test-icon"></td>
 						<?php else: ?>
 							<td><img src="<?php echo plugins_url().'/fxbp-scanner/public/images/x.png' ?>" class="test-icon"></td>
