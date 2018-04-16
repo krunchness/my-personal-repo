@@ -864,6 +864,19 @@ echo strpos_arr($haystack, $needle); // Will echo False
 ?>
 
 
+<!-- Filter or Search Multidimentional Array -->
+<?php 
+  $filterBy = '25x25'; // or Finance etc.
+
+  $new = array_filter($products_info, function ($var) use ($filterBy) {
+      return ($var['cmb_product_size_text'] == $filterBy);
+  });
+echo '<pre>';
+var_dump($new);
+echo '</pre>';
+?>
+
+
 
 
 <!-- Simple Accordion -->
@@ -1124,3 +1137,11 @@ add_filter('upload_mimes', 'cc_mime_types');
     
   });
 </script>
+
+<!-- Contact form Recaptcha Overflow on small-width -->
+<style type="text/css">
+  transform: scale(0.8); 
+  -webkit-transform: scale(0.8); 
+  transform-origin: 0 0; 
+  -webkit-transform-origin: 0 0;
+</style>
