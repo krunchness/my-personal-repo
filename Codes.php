@@ -1145,3 +1145,30 @@ add_filter('upload_mimes', 'cc_mime_types');
   transform-origin: 0 0; 
   -webkit-transform-origin: 0 0;
 </style>
+
+
+
+<!-- Add Category Image Metabox Using CMB2  -->
+<?php 
+$cmb_additionial_info = new_cmb2_box( array(
+        'id'           => $prefix . 'product_cat_info',
+        'title'        => esc_html__( 'Additional Info', 'cmb2' ),
+        'object_types' => array( 'term' ), // Post type
+        'taxonomies' => array( 'product_category' ),
+        'context'      => 'side', // normal, side
+        'priority'     => 'low', // low, high
+        'show_names'   => true, // Show field names on the left
+    ) );
+
+    $cmb_additionial_info->add_field( array(
+    'name'         => esc_html__( 'Category Image', 'cmb2' ),
+    'desc'         => esc_html__( 'Upload Images.', 'cmb2' ),
+    'id'           => $prefix . 'cat_file',
+    'type'         => 'file',
+    'options' => array(
+      'url' => false, // Hide the text input for the url
+    ),
+    'preview_size' => array( 100, 100 ), // Default: array( 50, 50 )
+  ) );
+
+ ?>
