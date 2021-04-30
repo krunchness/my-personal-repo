@@ -1171,4 +1171,29 @@ $cmb_additionial_info = new_cmb2_box( array(
     'preview_size' => array( 100, 100 ), // Default: array( 50, 50 )
   ) );
 
+
  ?>
+
+<script>
+ /* Check if Element is visible on scroll*/
+ if ($('.page-id-96').visible(true)) {
+	  		$.fn.isInViewport = function() {
+			  var elementTop = $(this).offset().top;
+			  var elementBottom = elementTop + $(this).outerHeight();
+
+			  var viewportTop = $(window).scrollTop();
+			  var viewportBottom = viewportTop + $(window).height();
+
+			  return elementBottom > viewportTop && elementTop < viewportBottom;
+			};
+			$(window).on('resize scroll', function() {
+				$('.history-list').each(function() {
+				    if ($(this).isInViewport()) {
+				      $(this).removeClass('disabled');
+				    } else {
+				      $(this).addClass('disabled');
+				    }
+				  });
+			}
+	  } 
+</script
