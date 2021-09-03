@@ -1196,4 +1196,36 @@ $cmb_additionial_info = new_cmb2_box( array(
 				  });
 			}
 	  } 
-</script
+</script>
+
+				     
+// Ajax Request from functions.php wordpress
+
+<script>
+    var ajax_url = ajax_params.ajax_url; // so we access our ajax_url through the ajax_params object
+    var data = {
+	action: 'filter_post_form',
+	form_data: $('.filter_post_form').serialize(),
+	filter_type: radio_value
+    };
+
+    $.post(ajax_url, data, function(response) {
+	$('.postform-filter-row').empty();
+	$('.postform-filter-row').append(response);
+	// console.log(response);
+    });			     
+</script>
+wp_localize_script( 'custom-scripts', 'ajax_params', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+	 
+add_action('wp_ajax_filter_post_form', 'filter_post_form');
+add_action('wp_ajax_nopriv_filter_post_form', 'filter_post_form');
+
+function theme_pto_posts_orderby($ignore, $orderBy, $query)
+  {
+      if( (! is_array($query->query_vars['post_type']) && $query->query_vars['post_type'] == 'post') || 
+              (is_array($query->query_vars)   &&  in_array('post', $query->query_vars)))
+              $ignore = TRUE;
+      
+      
+      return $ignore;
+  }
