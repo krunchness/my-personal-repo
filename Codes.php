@@ -1229,3 +1229,39 @@ function theme_pto_posts_orderby($ignore, $orderBy, $query)
       
       return $ignore;
   }
+
+
+//Save Attachment file upload from html form to ACF User Field
+if (isset($_FILES['form_fields'])) {
+	$file = $_FILES['form_fields'];
+
+	// Upload the file to the WordPress media directory
+	$upload = wp_upload_bits($file['name']['profile_picture'], null, file_get_contents($file['tmp_name']['profile_picture']));
+
+	if (!$upload['error']) {
+	    // File was uploaded successfully, so let's add it to the Media Library
+	    $wp_filetype = wp_check_filetype($upload['file'], null);
+
+
+
+	    $attachment = array(
+		'post_mime_type' => $wp_filetype['type'],
+		'post_title' => sanitize_file_name($file['name']['profile_picture']),
+		'post_content' => '',
+		'post_status' => 'inherit'
+	    );
+
+	    $attach_id = wp_insert_attachment($attachment, $upload['file']);
+
+	    // Generate attachment metadata
+	    require_once ABSPATH . 'wp-admin/includes/image.php';
+	    $attach_data = wp_generate_attachment_metadata($attach_id, $upload['file']);
+	    wp_update_attachment_metadata($attach_id, $attach_data);
+
+
+	    update_field('profile_picture', $attach_id, 'user_'. $user_id);
+
+	} else {
+	    echo 'Error uploading photo: ' . $upload['error'];
+	}
+}
