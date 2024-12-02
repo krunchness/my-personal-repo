@@ -1265,3 +1265,23 @@ if (isset($_FILES['form_fields'])) {
 	    echo 'Error uploading photo: ' . $upload['error'];
 	}
 }
+
+
+// Woocommerce add_filter for checking if the product is in the cart and if it’s true. it will force the user to register
+add_filter( 'woocommerce_checkout_registration_required', 'change_tax_class_user_role', 900 );
+function change_tax_class_user_role( $registration_required ) {
+    if ( ! WC()->cart->is_empty() ) {
+        $registration_required = false; // Initializing (allowing guest checkout by default)
+        $product_id = 199494;
+
+        // Loop through cart items
+        foreach ( WC()->cart->get_cart() as $item ) {
+            // Check if there is any item in cart that has not the option "Guest checkout allowed"
+            if ( $item['product_id'] == $product_id) {
+                return true; // Found: Force checkout user registration and exit
+            }
+        }
+    }
+    return $registration_required;
+}
+
