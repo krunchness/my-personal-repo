@@ -1285,3 +1285,20 @@ function change_tax_class_user_role( $registration_required ) {
     return $registration_required;
 }
 
+// Elementor header add class on scroll
+jQuery(document).ready(function($) {
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 50) { // Adjust the scroll position as needed
+            $('#top-header').addClass('scrolled');
+            $('.elementor-1468').addClass('scrolled');
+            $('#header-logo img').attr('src', '/wp-content/uploads/2023/06/wheelskoto-logo.webp');
+            $('#header-logo img').attr('srcset', '/wp-content/uploads/2023/06/wheelskoto-logo.webp');
+        } else {
+            $('#top-header').removeClass('scrolled');
+            $('.elementor-1468').removeClass('scrolled');
+            $('#header-logo img').attr('src', '/wp-content/uploads/2023/06/wheelskoto-logo-with-white-border-v2.webp');
+            $('#header-logo img').attr('srcset', '/wp-content/uploads/2023/06/wheelskoto-logo-with-white-border-v2.webp');
+        }
+    });
+
+});
