@@ -1213,7 +1213,20 @@ $cmb_additionial_info = new_cmb2_box( array(
 	$('.postform-filter-row').empty();
 	$('.postform-filter-row').append(response);
 	// console.log(response);
-    });			     
+    });
+
+    //	$.ajax({
+    //         url: ajax_object.ajax_url,
+    //         action: 'get_cities_of_province',
+    //         type: 'GET',
+    //         data: {
+    //             province_id: $(this).val()
+    //         },
+    //         dataType: 'json',
+    //         success: function(data) {
+    //             console.log(data);
+    //         }
+    //     });
 </script>
 wp_localize_script( 'custom-scripts', 'ajax_params', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 	 
