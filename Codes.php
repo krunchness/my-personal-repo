@@ -776,8 +776,17 @@ $('#file_upload').change(function () {
     },500)
   }
 
-  waitForElement("#myDiv",function(){
-    console.log("done");
+  waitForElement("#load-amelia-btn",function(){
+	console.log('loaded');
+	const clickInterval = setInterval(function () {
+		if ($("#desired-element").length) { // Change this to your target selector
+			console.log('Target element appeared. Stopping clicks.');
+			clearInterval(clickInterval);
+		} else {
+			console.log('Clicking button...');
+			$('#load-amelia-btn').click();
+		}
+	}, 500);
   });
 </script>
 
